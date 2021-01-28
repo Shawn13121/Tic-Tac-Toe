@@ -2,14 +2,13 @@ the_board = [i for i in range(1,10)]
 
 def setup(board):
     global player1, player2
-
     print("Let's play tic-tac-toe! Please enter your names.\n")
     player1 = input("[Player 1] : ")
     player2 = input("[Player 2] : ")
     print("\nAlright! Let's begin.")
 
-    draw_board(the_board)
-    move(the_board)
+    draw_board(board)
+    move(board)
     print("Game Over.")
 
 def draw_board(board):
@@ -34,10 +33,10 @@ def player_turn(board):
 
 def move(board):
     global player1, player2
-    while check_win(the_board) == False:
+    while check_win(board) == False:
         while True:
             try:
-                slot = input(f"\n{player1 if player_turn(the_board) else player2}, pick a slot (1-9): ")
+                slot = input(f"\n{player1 if player_turn(board) else player2}, pick a slot (1-9): ")
                 if slot.isnumeric() == False:
                     raise ValueError
                 elif int(slot) not in range(1,10) or board[int(slot)-1] in ('X', 'O'):
@@ -47,12 +46,12 @@ def move(board):
                 print("This slot is not available.\n")
                 continue
 
-        if player_turn(the_board):
-            board[int(slot)-1] = 'X'
+        if player_turn(board):
+            board[int(slot)-1] = 'X'  
         else:
-            board[int(slot)-1] = 'O'
+            board[int(slot)-1] = 'O'         
 
-        draw_board(the_board)
+        draw_board(board)
     return False
         
 def check_win(board): 
@@ -65,10 +64,10 @@ def check_win(board):
 def new_game(): #Not working...
     restart = input("Play again? [y/n] ")
     if restart == 'y':
-        the_board = [i for i in range(1, 10)]
+        new_board = [i for i in range(1, 10)]
+        print(new_board)
         print("\nAlright! Let's play again!")
-        check_win(the_board) == False
-        setup(the_board)
+        setup(new_board)
     else:
         print("Thanks for playing!")
 
