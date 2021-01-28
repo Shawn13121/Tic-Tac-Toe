@@ -1,77 +1,70 @@
-the_board = [i for i in range(1,10)]
+class Board:
 
-def setup(board):
-    global player1, player2
+    def __init__(self):
+        self.board = [i for i in range(1,10)]
+
+    def draw_board(self):
+        print(f" {self.board[0]} | {self.board[1]} | {self.board[2]} ")
+        print("---------")
+        print(f" {self.board[3]} | {self.board[4]} | {self.board[5]} ")
+        print("---------")
+        print(f" {self.board[6]} | {self.board[7]} | {self.board[8]} ")
+
+    def check_win(self): 
+        win_combinations = ((1,2,3), (4,5,6), (7,8,9), (1,4,7), (2,5,8), (3,6,9), (1,5,9), (3,5,7))
+        if self.board.count('X') + self.board.count('O') == 9:
+            return True
+        else:
+            return any((self.board[comb[0]-1] == self.board[comb[1]-1] == self.board[comb[2]-1]) for comb in win_combinations)
+
+
+def main():
+
+    game_board = Board()
+
     print("Let's play tic-tac-toe! Please enter your names.\n")
     player1 = input("[Player 1] : ")
     player2 = input("[Player 2] : ")
     print("\nAlright! Let's begin.")
 
-    draw_board(board)
-    move(board)
-    print("Game Over.")
+    def player_turn():
+        x_count = game_board.board.count('X')
+        o_count = game_board.board.count('O')
+        return x_count == o_count   
 
-def draw_board(board):
-    spot = 1
-    for tile in board:
-        if spot == 3 or spot == 6:
-            end = ' \n---------\n'
-        elif spot == 9:
-            end = ' \n'
-        else:
-            end = ' | '
-        char = ' '
-        if tile in ('X', 'O'):
-            char = tile
-        spot += 1
-        print(char, end=end)
-    
-def player_turn(board):
-    x_count = board.count('X')
-    o_count = board.count('O')
-    return x_count == o_count
-
-def move(board):
-    global player1, player2
-    while check_win(board) == False:
+    while Board.check_win(game_board) == False:
         while True:
             try:
-                slot = input(f"\n{player1 if player_turn(board) else player2}, pick a slot (1-9): ")
+                slot = input(f"\n{player1 if player_turn() else player2}, pick a slot (1-9): ")
                 if slot.isnumeric() == False:
                     raise ValueError
-                elif int(slot) not in range(1,10) or board[int(slot)-1] in ('X', 'O'):
+                elif int(slot) not in range(1,10) or game_board.board[int(slot)-1] in ('X', 'O'):
                     raise ValueError
                 break
             except ValueError:    
                 print("This slot is not available.\n")
                 continue
 
-        if player_turn(board):
-            board[int(slot)-1] = 'X'  
+        if player_turn():
+            game_board.board[int(slot)-1] = 'X'  
         else:
-            board[int(slot)-1] = 'O'         
+            game_board.board[int(slot)-1] = 'O'         
 
-        draw_board(board)
-    return False
-        
-def check_win(board): 
-    win_combinations = ((1,2,3), (4,5,6), (7,8,9), (1,4,7), (2,5,8), (3,6,9), (1,5,9), (3,5,7))
-    if board.count('X') + board.count('O') == 9:
-        return True
-    else:
-        return any((board[comb[0]-1] == board[comb[1]-1] == board[comb[2]-1]) for comb in win_combinations)
+        Board.draw_board(game_board)
+    
+    else:    
+        print("Game Over.")
+        restart = input("Play again? [y/n] ")
+        if restart == 'y':
+            print("\nAlright! Let's play again!")
+            return True 
+        else:
+            print("Thanks for playing!")
+            return False
 
-def new_game(): #Not working...
-    restart = input("Play again? [y/n] ")
-    if restart == 'y':
-        new_board = [i for i in range(1, 10)]
-        print(new_board)
-        print("\nAlright! Let's play again!")
-        setup(new_board)
-    else:
-        print("Thanks for playing!")
-
-setup(the_board)
-
-if not move(the_board):
-    new_game()
+while True:  
+    if main():
+        main()
+        continue
+    else: 
+        break
