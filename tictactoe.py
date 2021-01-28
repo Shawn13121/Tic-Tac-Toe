@@ -1,4 +1,3 @@
-
 the_board = [i for i in range(1,10)]
 
 def setup(board):
@@ -77,15 +76,3 @@ setup(the_board)
 
 if not move(the_board):
     new_game()
-
-
-
-# win_combinations = ((1,2,3), (4,5,6), (7,8,9), (1,4,7), (2,5,8), (3,6,9), (1,5,9), (3,5,7))
-#     if board.count('X') + board.count('O') > 0 and board.count('X') + board.count('O') <= 9:
-#         for comb in win_combinations:
-#             if (board[comb[0]-1] == board[comb[1]-1] == board[comb[2]-1]):
-#                 return -1
-#     elif board.count('X') + board.count('O') == 9:
-#         return -2
-#     else:
-#         return 0
