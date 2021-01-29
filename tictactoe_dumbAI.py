@@ -20,15 +20,15 @@ class Board:
 
 game_board = Board()
 
+#Note: In this game, the computer is always O and the player is always X.
+
 def who_first_move():
     first = random.randint(0, 1)
     if first == 0:
         return 1 #Player
     return 0 #Computer
 
-def player_turn():
-    #Computer is O.
-    # Player is X.  
+def player_turn(): 
     x_count = game_board.board.count('X')
     o_count = game_board.board.count('O')
     return x_count == o_count  
@@ -50,7 +50,6 @@ def computer_move():
         if Board.check_win(copy):
             return i
         copy.board[i-1] = i
-        
             
     #Second: Try to block player from winning
     for i in available_slots():
@@ -104,14 +103,8 @@ def main():
             turn += 1
         Board.draw_board(game_board)
 
-def place_char(pos):
-    if player_turn():
-        game_board.board[int(player_move())-1] = 'X'
-    else:
-        game_board.board[int(computer_move())-1] = 'O'  
-
-
-player = input("Let's play tic-tac-toe! What is your name? ")
+#Ask only on the first round.
+player = input("Let's play tic-tac-toe! What is your name? ") 
 
 answer = 'y'
 while answer.lower() == 'y':
