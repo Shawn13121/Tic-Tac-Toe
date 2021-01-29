@@ -44,31 +44,32 @@ def available_slots():
 def computer_move():
     copy = game_board
 
-    #First: Try to win
+    #First step: Try to win
     for i in available_slots():
         copy.board[i-1] = 'O'
         if Board.check_win(copy):
             return i
         copy.board[i-1] = i
             
-    #Second: Try to block player from winning
+    #Second step: Try to block player from winning
     for i in available_slots():
         copy.board[i-1] = 'X'
         if Board.check_win(copy):
             return i
         copy.board[i-1] = i
 
-    #Third: Try to get a corner tile
+    #Third step: Try to get a corner tile
     for i in available_slots():
+        print(available_slots())
         if i in (1, 3, 7, 9):
             return i
     
-    #Fourth: Try to get the center tile
+    #Fourth step: Try to get the center tile
     for i in available_slots():
         if i == 5:
             return i
 
-    #Fifth: Try to get a side tile
+    #Fifth step: Try to get a side tile
     for i in available_slots():
         if i in (2, 4, 6, 8):
             return i
@@ -76,7 +77,7 @@ def computer_move():
 def player_move():
     while True:
         try:
-            slot = input(f"\n{player}, pick a slot (1-9): ")
+            slot = input(f"{player}, pick a slot (1-9): ")
             if slot.isnumeric() == False:
                 raise ValueError
             elif int(slot) not in range(1,10) or game_board.board[int(slot)-1] in ('X', 'O'):
@@ -110,6 +111,7 @@ answer = 'y'
 while answer.lower() == 'y':
     main()
     print("\nGame Over.")
+    game_board = Board()
     answer = input("Play again? [y/n] ")
 
 print("Thanks for playing!")
