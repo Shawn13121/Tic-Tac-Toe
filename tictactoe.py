@@ -22,9 +22,6 @@ def main():
 
     game_board = Board()
 
-    print("Let's play tic-tac-toe! Please enter your names.\n")
-    player1 = input("[Player 1] : ")
-    player2 = input("[Player 2] : ")
     print("\nAlright! Let's begin.")
 
     def player_turn():
@@ -51,20 +48,17 @@ def main():
             game_board.board[int(slot)-1] = 'O'         
 
         Board.draw_board(game_board)
-    
-    else:    
-        print("Game Over.")
-        restart = input("Play again? [y/n] ")
-        if restart == 'y':
-            print("\nAlright! Let's play again!")
-            return True 
-        else:
-            print("Thanks for playing!")
-            return False
 
-while True:  
-    if main():
-        main()
-        continue
-    else: 
-        break
+
+#First round only: setting up the game
+print("Let's play tic-tac-toe! Please enter your names.\n")
+player1 = input("[Player 1] : ")
+player2 = input("[Player 2] : ")
+
+answer = 'y'
+while answer.lower() == 'y':
+    main()
+    print("\nGame Over.")
+    answer = input("Play again? [y/n] ")
+
+print("Thanks for playing!")
