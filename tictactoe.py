@@ -12,14 +12,12 @@ class Board:
 
     def check_win(self): 
         win_combinations = ((1,2,3), (4,5,6), (7,8,9), (1,4,7), (2,5,8), (3,6,9), (1,5,9), (3,5,7))
-        if self.board.count('X') + self.board.count('O') == 9:
+        if self.board.count('X') + self.board.count('O') == 9: #Check if the board is full in case of a tie
             return True
-        else:
-            return any((self.board[comb[0]-1] == self.board[comb[1]-1] == self.board[comb[2]-1]) for comb in win_combinations)
+        return any((self.board[comb[0]-1] == self.board[comb[1]-1] == self.board[comb[2]-1]) for comb in win_combinations)
 
 
 def main():
-
     game_board = Board()
 
     print("\nAlright! Let's begin.")
