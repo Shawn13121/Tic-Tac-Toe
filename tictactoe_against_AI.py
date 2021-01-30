@@ -12,7 +12,7 @@ class Board:
         print("---------")
         print(f" {self.board[6]} | {self.board[7]} | {self.board[8]} ")
 
-    def check_win(self): 
+    def game_over(self): 
         win_combinations = ((1,2,3), (4,5,6), (7,8,9), (1,4,7), (2,5,8), (3,6,9), (1,5,9), (3,5,7))
         if self.board.count('X') + self.board.count('O') == 9: #Check if the board is full in case of a tie
             return True
@@ -47,14 +47,14 @@ def computer_move():
     #First step: Try to win
     for i in available_slots():
         copy.board[i-1] = 'O'
-        if Board.check_win(copy):
+        if Board.game_over(copy):
             return i
         copy.board[i-1] = i
             
     #Second step: Try to block player from winning
     for i in available_slots():
         copy.board[i-1] = 'X'
-        if Board.check_win(copy):
+        if Board.game_over(copy):
             return i
         copy.board[i-1] = i
 
@@ -93,7 +93,7 @@ def main():
     turn = who_first_move()
     print(f"The {'player' if turn == 1 else 'computer'} will go first.")
 
-    while Board.check_win(game_board) == False:
+    while Board.game_over(game_board) == False:
         if turn%2 == 0:
             print("\nIt's the computer's turn.")
             game_board.board[int(computer_move())-1] = 'O'
