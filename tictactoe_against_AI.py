@@ -14,9 +14,16 @@ class Board:
 
     def game_over(self): 
         win_combinations = ((1,2,3), (4,5,6), (7,8,9), (1,4,7), (2,5,8), (3,6,9), (1,5,9), (3,5,7))
-        if self.board.count('X') + self.board.count('O') == 9: #Check if the board is full in case of a tie
-            return True
-        return any((self.board[comb[0]-1] == self.board[comb[1]-1] == self.board[comb[2]-1]) for comb in win_combinations)
+        win_X = any((self.board[comb[0]-1] == self.board[comb[1]-1] == self.board[comb[2]-1] == 'X') for comb in win_combinations)
+        win_O = any((self.board[comb[0]-1] == self.board[comb[1]-1] == self.board[comb[2]-1] == 'O') for comb in win_combinations)
+        if win_X:
+            return player #Player wins
+        elif win_O:
+            return 'The computer' #The computer wins
+        elif self.board.count('X') + self.board.count('O') == 9 and not win_O or win_X:
+            return 'Nobody' #Tie
+        else:
+            return 'Game not over'
 
 game_board = Board()
 
@@ -47,20 +54,19 @@ def computer_move():
     #First step: Try to win
     for i in available_slots():
         copy.board[i-1] = 'O'
-        if Board.game_over(copy):
+        if Board.game_over(copy) == 'The computer':
             return i
         copy.board[i-1] = i
             
     #Second step: Try to block player from winning
     for i in available_slots():
         copy.board[i-1] = 'X'
-        if Board.game_over(copy):
+        if Board.game_over(copy) == player:
             return i
         copy.board[i-1] = i
 
     #Third step: Try to get a corner tile
     for i in available_slots():
-        print(available_slots())
         if i in (1, 3, 7, 9):
             return i
     
@@ -93,7 +99,7 @@ def main():
     turn = who_first_move()
     print(f"The {'player' if turn == 1 else 'computer'} will go first.")
 
-    while Board.game_over(game_board) == False:
+    while Board.game_over(game_board) == 'Game not over':
         if turn%2 == 0:
             print("\nIt's the computer's turn.")
             game_board.board[int(computer_move())-1] = 'O'
@@ -103,6 +109,9 @@ def main():
             game_board.board[int(player_move())-1] = 'X'
             turn += 1
         Board.draw_board(game_board)
+    
+    #Specify who won once the game ends.
+    print(f"\nGame Over. {Board.game_over(game_board)} won!")
 
 #Ask only on the first round.
 player = input("Let's play tic-tac-toe! What is your name? ") 
@@ -110,7 +119,6 @@ player = input("Let's play tic-tac-toe! What is your name? ")
 answer = 'y'
 while answer.lower() == 'y':
     main()
-    print("\nGame Over.")
     game_board = Board()
     answer = input("Play again? [y/n] ")
 
